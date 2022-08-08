@@ -1,0 +1,64 @@
+local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt")()
+
+local win = lib:Window("Astro Hub",Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
+
+local Farming = win:Tab("Farming")
+
+local Player = win:Tab("Player")
+
+local Misc = win:Tab("Change UI Color")
+
+getgenv().autoclicker = false;
+getgenv().autoRB       = false;    
+
+
+Farming:Toggle("AutoClicker",false ,function(bool)
+    getgenv().autoclicker = bool
+    if getgenv().autoclicker then
+    			while game:GetService("RunService").RenderStepped:wait() do
+      		 game:GetService("ReplicatedStorage").Events.Tap:FireServer()
+      	 end
+    end
+end)
+
+Farming:Toggle("AutoRebirth ",false ,function(bool)
+    getgenv().autoclicker = bool
+    if getgenv().autoRB then
+    			while wait() do
+						local args = { [1] = getgenv().RBamount}
+						game:GetService("ReplicatedStorage").Events.Rebirth:FireServer(unpack(args))
+      			 end
+		    end
+end)
+
+Farming:Textbox("Rebirth Amount",true, function(t)
+		getgenv().RBamount = t
+end)
+
+
+
+Farming:Toggle("AutoHatch",false ,function(bool)
+    getgenv().autoHatch = bool
+    if getgenv().autoclicker then
+    			while wait() do
+      		 local args = { [1] = {}, [2] = getgenv().EggType , [3] = 1}
+			  game:GetService("ReplicatedStorage").Events.HatchEgg:InvokeServer(unpack(args))
+      	 end
+    end
+end)
+
+Player:Slider("Walk Speed",0,250,16, function(t)
+while t do wait()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = t
+    end
+end)
+
+Player:Slider("Jump Power",0,250,0, function(t)
+while t do wait()
+		game.Players.LocalPlayer.Character.Humanoid.JumpPower = t
+  end
+end)
+
+Misc:Colorpicker("Change UI Color",Color3.fromRGB(44, 120, 224), function(t)
+lib:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+end)
